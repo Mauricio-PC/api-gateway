@@ -33,3 +33,20 @@ spring:
           uri: lb://pokemon-service
           predicates:
             - Path=/api/pokemon/**, /pokemon/**, /pokemon/v3/api-docs, /pokemon/swagger-ui.html, /pokemon/swagger-ui/**
+```
+
+Swagger centraliza todo con:
+```yaml
+springdoc:
+  swagger-ui:
+    urls:
+      - name: pokemon-service
+        url: /pokemon/v3/api-docs
+```
+## 🧪 Cómo levantarlo
+1. Asegúrate de que discovery-service y pokemon-service están arriba.
+2. Corre este proyecto:
+   ```yaml
+   ./mvnw spring-boot:run
+   ```
+
