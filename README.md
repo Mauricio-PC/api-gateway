@@ -49,4 +49,13 @@ springdoc:
    ```yaml
    ./mvnw spring-boot:run
    ```
+3. Accede al Swagger central desde:
+   ```yaml
+   http://localhost:8080/swagger-ui.html
+   ```
+## 🧠 Tips
+⚠️ No uses puerto 8081 en el gateway. Ese lo usa el pokemon-service.
+💡 Si algo no se registra en Eureka, revisa los application.yml.
 
+##🧙 Autor
+Proyecto creado por Mauricio-PC como parte del sistema PokeMicroServicios.
