@@ -1,0 +1,38 @@
+server:
+  port: 8080  # Puerto donde se levantará el API Gateway
+
+spring:
+  application:
+    name: api-gateway  # Este nombre aparecerá en Eureka como identificador del servicio
+
+  cloud:
+    gateway:
+      routes:  # Aquí definimos las rutas que el gateway debe redirigir
+        - id: pokemon-service
+          uri: lb://pokemon-service  # 'lb' = LoadBalancer → buscará el servicio por nombre en Eureka
+          predicates:
+            - Path=/api/pokemon/**, /pokemon/**, /pokemon/v3/api-docs, /pokemon/swagger-ui.html, /pokemon/swagger-ui/**, /v3/api-docs/**  # Toda URL que empiece con esto será redirigida
+          filters:
+            - StripPrefix=1  # 🔥 Esto elimina "/pokemon" del path antes de enviarlo al servicio
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: pokemon-service
+        url: /pokemon/v3/api-docs
+        # Esto le dice a Swagger: “Muestra el Swagger de pokemon-service desde esta ruta.”
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8701/eureka/  # Dirección del Discovery Server (Eureka)
+
+
+# Explicación a fondo
+#Sección	                            ¿Qué hace?
+#server.port	                        Define el puerto local del Gateway (por defecto es 8080, buena práctica para el frontend de entrada).
+#spring.application.name	            Nombre del microservicio, fundamental para que Eureka lo registre correctamente.
+#spring.cloud.gateway.routes	        Configura las rutas que intercepta el Gateway y hacia dónde las redirige.
+#uri: lb://pokemon-service	            Significa "LoadBalance a pokemon-service registrado en Eureka". Esto permite el descubrimiento dinámico.
+#predicates	                            Define bajo qué condiciones se redirige una petición. Aquí: cuando el path empieza con /api/pokemon/.
+#eureka.client.service-url.defaultZone	Apunta a la URL donde está corriendo el Eureka Server. En este caso, es localhost:8701.
